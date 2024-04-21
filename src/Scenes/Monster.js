@@ -7,6 +7,12 @@ class Monster extends Phaser.Scene {
         this.bodyX = 300;
         this.bodyY = 350;
         
+        // Create class member variables for keyboard controls
+        this.keyS = null;
+        this.keyF = null;
+
+        this.keyA = null;
+        this.keyD = null;
     }
 
     // Use preload to load art and sound assets before the scene starts running.
@@ -55,12 +61,39 @@ class Monster extends Phaser.Scene {
         my.sprite.mouthFangs = this.add.sprite(bodyX, bodyY-40, "monsterParts", "mouthF.png");
         my.sprite.mouthFangs.scale = 0.5;
         my.sprite.mouthFangs.visible = false;
+
+        // Create key objects for keyboard controls
+        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     }
 
     update() {
         let my = this.my;    // create an alias to this.my for readability
 
-       
+        // detect keyboard input and change smile accordingly
+        if(Phaser.Input.Keyboard.JustDown(this.keyS)) {
+            my.sprite.mouthFangs.visible = false;
+            my.sprite.mouthSmile.visible = true;
+        }
+        if(Phaser.Input.Keyboard.JustDown(this.keyF)) {
+            my.sprite.mouthSmile.visible = false;
+            my.sprite.mouthFangs.visible = true;
+        }
+
+        // detect keyboard input for movement
+        if(this.keyA.isDown) {
+            for (const spr in my.sprite) {
+                my.sprite[spr].x -= 1;
+            }
+        }
+        if(this.keyD.isDown) {
+            for (const spr in my.sprite) {
+                my.sprite[spr].x += 1;
+            }
+        }
     }
 
 }
